@@ -1,7 +1,11 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const { ObjectId } = require('mongodb')
+const { client, databse } = require('./config/MongoDB')
 require('dotenv').config()
+
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,21 +14,11 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 
-const uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@mern-blog.pesr2.mongodb.net/?retryWrites=true&w=majority&appName=mern-blog`
 
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
 
 async function run() {
     try {
         await client.connect();
-
-        const databse = client.db('mern-blog')
         const usersCollection = databse.collection('users')
 
         /**
@@ -117,7 +111,13 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send({
+        'application_name': 'Express MongoDB Starter',
+        'version': '1.0.0',
+        'description': 'A simple Express application with MongoDB integration',
+        'author': 'Al Azad Heera',
+        'license': 'MIT',
+    })
 })
 
 app.listen(port, () => {

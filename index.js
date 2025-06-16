@@ -5,6 +5,7 @@ const { ObjectId } = require('mongodb')
 const { client, databse } = require('./config/MongoDB')
 require('dotenv').config()
 const Auth = require('./middlewares/AuthMiddleware')
+const { default: chalk } = require('chalk')
 
 
 
@@ -19,6 +20,7 @@ app.use(morgan('dev'))
 async function run() {
     try {
         await client.connect();
+        console.log(chalk.green('🎯 Database successfully connected.'))
         const usersCollection = databse.collection('users')
 
         /**

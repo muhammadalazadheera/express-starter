@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const { ObjectId } = require('mongodb')
 const { client, databse } = require('./config/MongoDB')
 require('dotenv').config()
+const Auth = require('./middlewares/AuthMiddleware')
 
 
 
@@ -13,7 +14,6 @@ const port = process.env.PORT || 3000;
 app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
-
 
 
 async function run() {
@@ -37,7 +37,7 @@ async function run() {
         /**
          * GET ALL THE USERS FROM USERS COLLECTION
         */
-        app.get('/users', async (req, res) => {
+        app.get('/users', Auth, async (req, res) => {
             const cursor = usersCollection.find();
 
             const result = await cursor.toArray()

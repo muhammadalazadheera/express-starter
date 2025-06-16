@@ -1,12 +1,12 @@
 // middleware/auth.js
-const admin = require('../firebase');
+const admin = require('../config/Firebase');
 
 async function Auth(req, res, next) {
 
     const idToken = req.headers.authorization?.split('Bearer ')[1];
 
     if (!idToken) {
-        return res.status(401).json({ error: 'No token provided' });
+        return res.status(401).json({ error: 'Trying to unauthorized access' });
     }
 
     try {
